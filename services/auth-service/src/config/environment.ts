@@ -18,6 +18,7 @@ const envSchema = z.object({
   SOCKET_SERVICE_URL: z.string().url(),
   KAFKA_BROKERS: z.string().default('localhost:9092'),
   KAFKA_CLIENT_ID: z.string().default('chat-service'),
+  CLERK_WEBHOOK_SIGNING_SECRET: z.string(),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);

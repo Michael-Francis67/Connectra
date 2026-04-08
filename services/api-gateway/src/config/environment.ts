@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { z } from 'zod';
 import dotenv from 'dotenv';
 
@@ -6,25 +7,18 @@ dotenv.config();
 const envSchema = z.object({
   PORT: z
     .string()
-    .default('4002')
+    .default('4000')
     .transform((val) => parseInt(val, 10)),
-  DB_HOST: z.string(),
-  DB_PORT: z
-    .string()
-    .default('5432')
-    .transform((val) => parseInt(val, 10)),
-  DB_USER: z.string(),
-  DB_PASSWORD: z.string(),
-  DB_NAME: z.string(),
   NODE_ENV: z
     .enum(['development', 'test', 'production'])
     .default('development'),
   CLIENT_URL: z.string().url(),
   CALL_SERVICE_URL: z.string().url(),
   GROUP_SERVICE_URL: z.string().url(),
+  CHATS_SERVICE_URL: z.string().url(),
   SOCKET_SERVICE_URL: z.string().url(),
-  KAFKA_BROKERS: z.string().default('localhost:9092'),
-  KAFKA_CLIENT_ID: z.string().default('chat-service'),
+  AUTH_SERVICE_URL: z.string().url(),
+  INTERNAL_SECRET: z.string().min(1),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);

@@ -37,19 +37,19 @@ const Navbar = () => {
                     })}
                 </ul>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-around gap-3">
                     <ModeToggle />
                     <Show when={"signed-in"}>
                         <UserButton />
                     </Show>
                     <Show when={"signed-in"}>
                         <Link href={"/call-audio"}>
-                            <PhoneIcon className="w-6 h-6 text-gray-600 hover:text-primary transition-colors duration-200" />
+                            <PhoneIcon className="size-5 text-gray-600 hover:text-primary transition-colors duration-200" />
                         </Link>
                     </Show>
                     <Show when={"signed-in"}>
                         <Link href={"/call-video"}>
-                            <VideoIcon className="w-6 h-6 text-gray-600 hover:text-primary transition-colors duration-200" />
+                            <VideoIcon className="size-5 text-gray-600 hover:text-primary transition-colors duration-200" />
                         </Link>
                     </Show>
                 </div>

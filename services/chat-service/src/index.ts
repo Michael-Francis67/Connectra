@@ -1,6 +1,8 @@
 import 'module-alias/register';
 import 'dotenv/config';
 
+import 'reflect-metadata';
+
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -10,6 +12,7 @@ import { clerkMiddleware } from '@clerk/express';
 // Local imports
 import { env } from './config/environment.ts';
 import logger from './utils/logger.utils.ts';
+import { AppDataSource } from './config/data-source.ts';
 
 const app = express();
 const PORT = env.PORT;
@@ -35,6 +38,13 @@ app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
 
-app.listen(PORT, () => {
-  logger.info(`Chat service is running on port ${PORT}`);
-});
+AppDataSource.initialize()
+  .then(() => {
+    logger.info('Database connected');
+    app.listen(PORT, () => {
+      logger.info(`Chat service is running on port ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    logger.error(error);
+  });

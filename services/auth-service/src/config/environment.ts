@@ -15,10 +15,15 @@ const envSchema = z.object({
   CLIENT_URL: z.string().url(),
   CALL_SERVICE_URL: z.string().url(),
   GROUP_SERVICE_URL: z.string().url(),
+  CHAT_SERVICE_URL: z.string().url(),
+  API_GATEWAY_URL: z.string().url(),
   SOCKET_SERVICE_URL: z.string().url(),
   KAFKA_BROKERS: z.string().default('localhost:9092'),
   KAFKA_CLIENT_ID: z.string().default('chat-service'),
   CLERK_WEBHOOK_SIGNING_SECRET: z.string(),
+  STREAM_API_KEY: z.string(),
+  STREAM_API_SECRET: z.string(),
+  STREAM_APP_ID: z.string(),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);

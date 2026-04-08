@@ -10,13 +10,14 @@ import { clerkMiddleware } from '@clerk/express';
 // Local imports
 import { env } from './config/environment.ts';
 import logger from './utils/logger.utils.ts';
+import authRoute from './routes/auth.route.ts';
 
 const app = express();
 const PORT = env.PORT;
 
 app.use(
   cors({
-    origin: env.CLIENT_URL,
+    origin: env.API_GATEWAY_URL,
     credentials: true,
   }),
 );
@@ -28,13 +29,13 @@ app.use(
     stream: { write: (message) => logger.http(message.trim()) },
   }),
 );
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
 
+app.use('/webhook', authRoute);
+
 app.listen(PORT, () => {
-  logger.info(`Chat service is running on port ${PORT}`);
+  logger.info(`Auth service is running on port ${PORT}`);
 });

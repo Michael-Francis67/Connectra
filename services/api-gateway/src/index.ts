@@ -3,94 +3,163 @@ import 'dotenv/config';
 
 import express from 'express';
 import cors from 'cors';
-import { createProxyMiddleware } from 'http-proxy-middleware';
-import { clerkMiddleware } from '@clerk/express';
-import helmet from 'helmet';
 import morgan from 'morgan';
-import authMiddleware from './middlewares/auth.middleware.ts';
+import helmet from 'helmet';
+import { createProxyMiddleware } from 'http-proxy-middleware';
+import { clerkMiddleware, getAuth } from '@clerk/express';
 import jwt from 'jsonwebtoken';
+import logger from './utils/logger.utils.ts';
+import { env } from './config/environment.ts';
+import { errorHandler } from './utils/error-handler.ts';
 
 const app = express();
+const PORT = env.PORT;
 
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || origin === env.CLIENT_URL) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'X-Requested-With',
+      'Accept',
+    ],
+  }),
+);
 app.use(clerkMiddleware());
-app.use(cors());
 app.use(helmet());
-app.use(morgan('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
+app.use(
+  morgan('combined', {
+    stream: { write: (message) => logger.http(message.trim()) },
+  }),
+);
 
 app.use(
   '/api/auth',
   createProxyMiddleware({
-    target: process.env.AUTH_URL,
+    target: env.AUTH_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: {
-      '^/api/auth': '/auth',
-    },
-  }),
-);
-
-app.use(
-  '/api/users',
-  authMiddleware.protected,
-  createProxyMiddleware({
-    target: process.env.USERS_URL,
-    changeOrigin: true,
-    on: {
-      proxyReq: (proxyReq, req: any, _res: any) => {
-        const { userId } = req.auth || {};
-
-        if (!userId) {
-          return;
-        }
-
-        const signedUserId = jwt.sign(
-          { userId },
-          process.env.INTERNAL_SECRET as string,
-          { expiresIn: '15m' },
-        );
-
-        proxyReq.setHeader('x-signed-user-id', signedUserId);
-      },
-    },
-    pathRewrite: {
-      '^/api/users': '/users',
-    },
-  }),
-);
-
-app.use(
-  '/api/calls',
-  authMiddleware.protected,
-  createProxyMiddleware({
-    target: process.env.CALLS_URL,
-    changeOrigin: true,
-    pathRewrite: {
-      '^/api/calls': '/calls',
+      '^/api/auth': '',
     },
   }),
 );
 
 app.use(
   '/api/chats',
-  authMiddleware.protected,
   createProxyMiddleware({
-    target: process.env.CHATS_URL,
+    target: env.CHATS_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: {
-      '^/api/chats': '/chats',
+      '^/api/chats': '',
+    },
+    on: {
+      proxyReq: (proxyReq, req) => {
+        const { userId } = getAuth(req as express.Request) || {};
+
+        if (!userId) {
+          proxyReq.abort();
+        }
+
+        const signedUserId = jwt.sign({ userId }, env.INTERNAL_SECRET, {
+          expiresIn: '1d',
+          algorithm: 'HS256',
+        });
+        proxyReq.setHeader('x-user-id', signedUserId);
+      },
     },
   }),
 );
 
 app.use(
   '/api/groups',
-  authMiddleware.protected,
   createProxyMiddleware({
-    target: process.env.GROUPS_URL,
+    target: env.GROUP_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: {
-      '^/api/groups': '/groups',
+      '^/api/groups': '',
+    },
+    on: {
+      proxyReq: (proxyReq, req) => {
+        const { userId } = getAuth(req as express.Request) || {};
+
+        if (!userId) {
+          proxyReq.abort();
+        }
+
+        const signedUserId = jwt.sign({ userId }, env.INTERNAL_SECRET, {
+          expiresIn: '1d',
+          algorithm: 'HS256',
+        });
+        proxyReq.setHeader('x-user-id', signedUserId);
+      },
     },
   }),
 );
+
+app.use(
+  '/api/calls',
+  createProxyMiddleware({
+    target: env.CALL_SERVICE_URL,
+    changeOrigin: true,
+    pathRewrite: {
+      '^/api/calls': '',
+    },
+    on: {
+      proxyReq: (proxyReq, req) => {
+        const { userId } = getAuth(req as express.Request) || {};
+
+        if (!userId) {
+          proxyReq.abort();
+        }
+
+        const signedUserId = jwt.sign({ userId }, env.INTERNAL_SECRET, {
+          expiresIn: '1d',
+          algorithm: 'HS256',
+        });
+        proxyReq.setHeader('x-user-id', signedUserId);
+      },
+    },
+  }),
+);
+
+app.use(
+  '/api/sockets',
+  createProxyMiddleware({
+    target: env.SOCKET_SERVICE_URL,
+    changeOrigin: true,
+    pathRewrite: {
+      '^/api/sockets': '',
+    },
+    on: {
+      proxyReq: (proxyReq, req) => {
+        const { userId } = getAuth(req as express.Request) || {};
+
+        if (!userId) {
+          proxyReq.abort();
+        }
+
+        const signedUserId = jwt.sign({ userId }, env.INTERNAL_SECRET, {
+          expiresIn: '1d',
+          algorithm: 'HS256',
+        });
+        proxyReq.setHeader('x-user-id', signedUserId);
+      },
+    },
+  }),
+);
+
+app.use(errorHandler);
+
+app.listen(PORT, () => {
+  logger.info(`API Gateway is running on port ${PORT}`);
+});

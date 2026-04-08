@@ -29,33 +29,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
     return (
-        <ClerkProvider
-            appearance={{
-                elements: {
-                    formButtonPrimary: {
-                        backgroundColor: "#193cb8",
-                        color: "white",
-                        border: "none",
-                        outline: "none",
-                        borderColor: "transparent",
-                        "&:hover": {backgroundColor: "#193cb8"},
-                        borderRadius: "8px",
-                    },
-                },
-            }}
+        <html
+            lang="en"
+            className={`${sanchez.variable} ${noto_sans.variable} ${ubuntu.variable} h-full antialiased`}
+            suppressHydrationWarning
         >
-            <html
-                lang="en"
-                className={`${sanchez.variable} ${noto_sans.variable} ${ubuntu.variable} h-full antialiased`}
-                suppressHydrationWarning
-            >
-                <body className="min-h-full flex flex-col">
+            <body className="min-h-full flex flex-col">
+                <ClerkProvider>
                     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
                         {children}
                     </ThemeProvider>
                     <Toaster />
-                </body>
-            </html>
-        </ClerkProvider>
+                </ClerkProvider>
+            </body>
+        </html>
     );
 }

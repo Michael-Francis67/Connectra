@@ -1,4 +1,4 @@
-import { UserJSON } from '@clerk/express';
+import type { UserJSON } from '@clerk/express';
 
 declare global {
   namespace Express {

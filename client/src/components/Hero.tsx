@@ -6,7 +6,7 @@ const Hero = () => {
     return (
         <div>
             <div className="w-full h-[70vh] flex flex-col md:flex-row md:justify-around justify-center items-center">
-                <div className="space-y-3 block">
+                <div className="space-y-3 w-full lg:w-1/2 flex flex-col justify-center lg:items-start items-center">
                     <div className="space-y-1">
                         <h1 className="text-5xl font-semibold">Connect Instantly.</h1>
                         <h2 className="text-5xl font-semibold">Chat Smarter.</h2>
@@ -36,7 +36,7 @@ const Hero = () => {
                     alt="Hero image"
                     width={500}
                     height={500}
-                    className="rounded-lg w-auto h-auto"
+                    className="rounded-lg w-auto h-auto hidden lg:block"
                 />
             </div>
         </div>

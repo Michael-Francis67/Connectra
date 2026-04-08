@@ -8,6 +8,14 @@ const levels = {
     debug: 4,
 };
 
+winston.addColors({
+    error: "red",
+    warn: "yellow",
+    info: "green",
+    http: "magenta",
+    debug: "white",
+});
+
 const logger = winston.createLogger({
     levels,
     format: winston.format.json(),

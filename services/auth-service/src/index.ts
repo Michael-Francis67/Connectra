@@ -11,6 +11,7 @@ import { clerkMiddleware } from '@clerk/express';
 import { env } from './config/environment.ts';
 import logger from './utils/logger.utils.ts';
 import authRoute from './routes/auth.route.ts';
+import userRoute from './routes/user.route.ts';
 
 const app = express();
 const PORT = env.PORT;
@@ -35,6 +36,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/webhook', authRoute);
+app.use('/users', userRoute);
 
 app.listen(PORT, () => {
   logger.info(`Auth service is running on port ${PORT}`);

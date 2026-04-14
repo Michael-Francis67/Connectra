@@ -35,6 +35,7 @@ const logger = winston.createLogger({
     new winston.transports.File({ filename: 'logs/info.log', level: 'info' }),
     new winston.transports.File({ filename: 'logs/warn.log', level: 'warn' }),
   ],
+  defaultMeta: 'Group Service',
 });
 
 export default logger;

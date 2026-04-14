@@ -17,12 +17,17 @@ export default defineConfig([
     extends: ['js/recommended', prettier],
     languageOptions: { globals: globals.browser },
     rules: {
-      'prettier/prettier': 'error',
+      'prettier/prettier': [
+        'error',
+        {
+          endOfLine: 'auto',
+        },
+      ],
       'no-unused-vars': 'warn',
       'no-undef': 'warn',
       '@typescript-eslint/no-require-imports': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/no-namespace': 'off',
       '@typescript-eslint/no-empty-interface': 'off',
       '@typescript-eslint/consistent-type-imports': 'warn',

@@ -1,4 +1,4 @@
-import { UserController } from '@/controllers/user.controller.ts';
+import { UserController } from '@/controllers/user.controller.js';
 import type { Router } from 'express';
 import express from 'express';
 

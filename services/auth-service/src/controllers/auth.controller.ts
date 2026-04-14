@@ -1,7 +1,7 @@
-import { env } from '@/config/environment.ts';
-import { AuthService } from '@/services/auth.service.ts';
-import logger from '@/utils/logger.utils.ts';
-import { clerkWebhookSchema } from '@/validations/clerk-webhook.validation.ts';
+import { env } from '@/config/environment.js';
+import { AuthService } from '@/services/auth.service.js';
+import logger from '@/utils/logger.utils.js';
+import { clerkWebhookSchema } from '@/validations/clerk-webhook.validation.js';
 import type { UserJSON } from '@clerk/express';
 import { verifyWebhook } from '@clerk/express/webhooks';
 import type { Request, Response, NextFunction } from 'express';

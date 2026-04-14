@@ -1,0 +1,30 @@
+version: "1.0"
+
+services:
+  api-gateway:
+    image: api-gateway:1.0.0
+  auth-service:
+    image: auth-service:1.0.0
+    container_name: auth_service
+    ports:
+      - "4001:4001"
+    command: /auth-service/DockerFile
+    entrypoint: /auth-service/dist/index.js
+    environment:
+      - PORT=4001
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:postgres@localhost:5432/auth_service_db?schema=public
+      - CLERK_PUBLISHABLE_KEY=pk_test_ZXhvdGljLW9wb3NzdW0tMS5jbGVyay5hY2NvdW50cy5kZXYk
+      - CLERK_SECRET_KEY=sk_test_i05wWsvbVPVW7zznUQkqv1zttxWZcb5Wf7IEu954zc
+      - CLERK_WEBHOOK_SIGNING_SECRET="whsec_v9mKVTS2LbNTP9OTW7w5hqHkQUqIZGZl"
+      - STREAM_APP_ID="1570474"
+      - STREAM_API_KEY="cchfbjuv8jaw"
+      - STREAM_API_SECRET="5wkyz8ugxfyygwkdhue76v8pckmdxucegkss34zb8uxhm9upfv8st9pnuy9azn9j"
+      - CLIENT_URL=http://localhost:3000
+      - CALL_SERVICE_URL=http://localhost:4004
+      - CHAT_SERVICE_URL=http://localhost:4002
+      - API_GATEWAY_URL=http://localhost:4000
+      - GROUP_SERVICE_URL=http://localhost:4003
+      - SOCKET_SERVICE_URL=http://localhost:4005
+      - KAFKA_BROKER=http://localhost:9092
+      - KAFKA_CLIENT_ID=auth-service

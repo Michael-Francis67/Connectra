@@ -1,4 +1,4 @@
-import { UserService } from '@/services/user.service.ts';
+import { UserService } from '@/services/user.service.js';
 import type { Request, Response, NextFunction } from 'express';
 
 export class UserController {

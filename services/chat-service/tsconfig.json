@@ -5,10 +5,11 @@
     "outDir": "dist",
     "types": ["node", "jest"],
     "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*", "__tests__"],
+  "include": ["src/**/*", "src/tests"],
   "exclude": ["node_modules", "dist"]
 }

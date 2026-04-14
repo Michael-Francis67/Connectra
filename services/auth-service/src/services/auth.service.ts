@@ -1,7 +1,7 @@
 import type { UserJSON } from '@clerk/express';
-import PrismaService from './prisma.service.ts';
-import type { User } from '@/generated/prisma/client.ts';
-import { Stream } from '@/lib/stream.ts';
+import PrismaService from './prisma.service.js';
+import type { User } from '@/generated/prisma/client.js';
+import { Stream } from '@/lib/stream.js';
 
 export class AuthService {
   private prisma = new PrismaService().getPrisma();

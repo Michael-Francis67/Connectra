@@ -1,6 +1,6 @@
 {
-    "ignores": ["node_modules", "dist"],
-    "watch": ["src"],
-    "ext": "ts,js,json",
-    "exec": "tsx watch src/index.ts"
+  "ignores": ["node_modules", "dist"],
+  "watch": ["src"],
+  "ext": "ts,js,json",
+  "exec": "tsx watch dist/index.js"
 }

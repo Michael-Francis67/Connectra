@@ -1,6 +1,6 @@
-import { env } from '@/config/environment.ts';
-import { PrismaClient } from '@/generated/prisma/client.ts';
-import { Prisma } from '@/generated/prisma/client.ts';
+import { env } from '@/config/environment.js';
+import { PrismaClient } from '@/generated/prisma/client.js';
+import { Prisma } from '@/generated/prisma/client.js';
 import { PrismaPg } from '@prisma/adapter-pg';
 
 class PrismaService {

@@ -8,10 +8,10 @@ import morgan from 'morgan';
 import { clerkMiddleware } from '@clerk/express';
 
 // Local imports
-import { env } from './config/environment.ts';
-import logger from './utils/logger.utils.ts';
-import authRoute from './routes/auth.route.ts';
-import userRoute from './routes/user.route.ts';
+import { env } from './config/environment.js';
+import logger from './utils/logger.utils.js';
+import authRoute from './routes/auth.route.js';
+import userRoute from './routes/user.route.js';
 
 const app = express();
 const PORT = env.PORT;

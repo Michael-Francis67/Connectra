@@ -1,5 +1,5 @@
-import type { User } from '@/generated/prisma/client.ts';
-import PrismaService from './prisma.service.ts';
+import type { User } from '@/generated/prisma/client.js';
+import PrismaService from './prisma.service.js';
 
 export class UserService {
   private prisma = new PrismaService().getPrisma();

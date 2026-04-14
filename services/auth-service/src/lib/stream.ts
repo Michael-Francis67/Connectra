@@ -1,5 +1,5 @@
 import { StreamChat } from 'stream-chat';
-import { env } from '@/config/environment.ts';
+import { env } from '@/config/environment.js';
 
 export class Stream {
   public client: StreamChat;

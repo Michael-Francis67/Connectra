@@ -1,7 +1,7 @@
 export default {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  roots: ['./__tests__'],
+  roots: ['./src/tests'],
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },

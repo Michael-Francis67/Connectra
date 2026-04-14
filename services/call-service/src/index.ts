@@ -36,5 +36,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  logger.info(`Chat service is running on port ${PORT}`);
+  logger.info(`Call service is running on port ${PORT}`);
 });

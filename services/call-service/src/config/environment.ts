@@ -13,11 +13,10 @@ const envSchema = z.object({
     .enum(['development', 'test', 'production'])
     .default('development'),
   CLIENT_URL: z.string().url(),
-  CALL_SERVICE_URL: z.string().url(),
-  GROUP_SERVICE_URL: z.string().url(),
+  AUTH_SERVICE_URL: z.string().url(),
   SOCKET_SERVICE_URL: z.string().url(),
   KAFKA_BROKERS: z.string().default('localhost:9092'),
-  KAFKA_CLIENT_ID: z.string().default('chat-service'),
+  KAFKA_CLIENT_ID: z.string().default('call-service'),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);

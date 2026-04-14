@@ -1,0 +1,90 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Chat {
+  id          String    @id @default(cuid())
+  createdBy   String    @map("created_by")
+  createdWith String    @map("created_with")
+  messages    Message[]
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@index([createdBy])
+  @@index([createdWith])
+  @@map("chats")
+}
+
+model Message {
+  id        String     @id @default(cuid())
+  chatId    String     @map("chat_id")
+  chat      Chat       @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  sender    String
+  content   Content?
+  fileSize  BigInt?
+  duration  Int?
+  type      Type       @default(TEXT)
+  status    Status     @default(PENDING)
+  reactions Reaction[]
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+
+  @@index([chatId])
+  @@index([sender])
+  @@map("messages")
+}
+
+model Content {
+  id        String   @id @default(cuid())
+  text      String?
+  images    String[]
+  audio     String?
+  video     String?
+  document  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  messageId String   @unique
+  message   Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@map("contents")
+}
+
+model Reaction {
+  id        String   @id @default(cuid())
+  messageId String   @map("message_id")
+  message   Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  emoji     Json[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("reactions")
+}
+
+enum Type {
+  TEXT
+  IMAGE
+  AUDIO
+  VIDEO
+  DOCUMENT
+  TEXT_IMAGE
+  TEXT_VIDEO
+  TEXT_DOCUMENT
+}
+
+enum Status {
+  PENDING
+  SENT
+  SEEN
+  FAILED
+  EDITED
+}
